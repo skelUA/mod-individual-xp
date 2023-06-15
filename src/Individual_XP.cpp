@@ -36,6 +36,20 @@ public:
     }
 };
 
+enum IndividualXP
+{
+    ACORE_STRING_CREDIT = 35411,
+    ACORE_STRING_MODULE_DISABLED,
+    ACORE_STRING_RATES_DISABLED,
+    ACORE_STRING_COMMAND_VIEW,
+    ACORE_STRING_MAX_RATE,
+    ACORE_STRING_MIN_RATE,
+    ACORE_STRING_COMMAND_SET,
+    ACORE_STRING_COMMAND_DISABLED,
+    ACORE_STRING_COMMAND_ENABLED,
+    ACORE_STRING_COMMAND_DEFAULT
+};
+
 class Individual_Xp_Announce : public PlayerScript
 {
 public:
@@ -47,7 +61,7 @@ public:
         // Announce Module
         if (IndividualXpEnabled & IndividualXpAnnounceModule)
         {
-            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00IndividualXpRate |rmodule");
+            ChatHandler(player->GetSession()).SendSysMessage(ACORE_STRING_CREDIT);
         }
     }
 };
@@ -126,7 +140,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -141,7 +155,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -152,13 +166,13 @@ public:
 
         if (me->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN))
         {
-            handler->PSendSysMessage("[XP] Your Individual XP is currently disabled. Use .xp enable to re-enable it.");
+            handler->PSendSysMessage(ACORE_STRING_RATES_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
         else
         {
-            me->GetSession()->SendAreaTriggerMessage("Your current XP rate is %u", me->CustomData.GetDefault<PlayerXpRate>("Individual_XP")->XPRate);
+            me->GetSession()->SendAreaTriggerMessage(ACORE_STRING_COMMAND_VIEW, me->CustomData.GetDefault<PlayerXpRate>("Individual_XP")->XPRate);
         }
         return true;
     }
@@ -168,7 +182,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -183,19 +197,19 @@ public:
         uint32 rate = (uint32)atol(args);
         if (rate > MaxRate)
         {
-            handler->PSendSysMessage("[XP] The maximum rate limit is %u.", MaxRate);
+            handler->PSendSysMessage(ACORE_STRING_MAX_RATE, MaxRate);
             handler->SetSentErrorMessage(true);
             return false;
         }
         else if (rate == 0)
         {
-            handler->PSendSysMessage("[XP] The minimum rate limit is 1.");
+            handler->PSendSysMessage(ACORE_STRING_MIN_RATE);
             handler->SetSentErrorMessage(true);
             return false;
         }
 
         me->CustomData.GetDefault<PlayerXpRate>("Individual_XP")->XPRate = rate;
-        me->GetSession()->SendAreaTriggerMessage("You have updated your XP rate to %u", rate);
+        me->GetSession()->SendAreaTriggerMessage(ACORE_STRING_COMMAND_SET, rate);
         return true;
     }
 
@@ -204,7 +218,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -215,7 +229,7 @@ public:
 
         // Turn Disabled On But Don't Change Value...
         me->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN);
-        me->GetSession()->SendAreaTriggerMessage("You have disabled your XP gain.");
+        me->GetSession()->SendAreaTriggerMessage(ACORE_STRING_COMMAND_DISABLED);
         return true;
     }
 
@@ -224,7 +238,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -234,7 +248,7 @@ public:
             return false;
 
         me->RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN);
-        me->GetSession()->SendAreaTriggerMessage("You have enabled your XP gain.");
+        me->GetSession()->SendAreaTriggerMessage(ACORE_STRING_COMMAND_ENABLED);
         return true;
     }
 
@@ -243,7 +257,7 @@ public:
     {
         if (!IndividualXpEnabled)
         {
-            handler->PSendSysMessage("[XP] The Individual XP module is deactivated.");
+            handler->PSendSysMessage(ACORE_STRING_MODULE_DISABLED);
             handler->SetSentErrorMessage(true);
             return false;
         }
@@ -253,7 +267,7 @@ public:
             return false;
 
         me->CustomData.GetDefault<PlayerXpRate>("Individual_XP")->XPRate = DefaultRate;
-        me->GetSession()->SendAreaTriggerMessage("You have restored your XP rate to the default value of %u", DefaultRate);
+        me->GetSession()->SendAreaTriggerMessage(ACORE_STRING_COMMAND_DEFAULT, DefaultRate);
         return true;
     }
 };
