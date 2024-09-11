@@ -5,6 +5,10 @@
 #include "Player.h"
 #include "Object.h"
 #include "DataMap.h"
+#include <fmt/chrono.h>
+#include <fmt/format.h>
+#include <fmt/printf.h>
+#include <locale>
 
 using namespace Acore::ChatCommands;
 
