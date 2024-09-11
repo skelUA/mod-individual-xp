@@ -159,8 +159,7 @@ public:
         }
         else
         {
-            player->GetSession()->SendAreaTriggerMessage(GetSession()->GetAcoreString(ACORE_STRING_COMMAND_VIEW), player->CustomData.GetDefault<PlayerXpRate>("IndividualXP")->XPRate);
-
+            player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetAcoreString(ACORE_STRING_COMMAND_VIEW), player->CustomData.GetDefault<PlayerXpRate>("IndividualXP")->XPRate);
         }
         return true;
     }
@@ -196,7 +195,7 @@ public:
         }
 
         player->CustomData.GetDefault<PlayerXpRate>("IndividualXP")->XPRate = rate;
-        player->GetSession()->SendAreaTriggerMessage(GetSession()->GetAcoreString(ACORE_STRING_COMMAND_SET), rate);
+        player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetAcoreString(ACORE_STRING_COMMAND_SET), rate);
         return true;
     }
 
@@ -216,7 +215,7 @@ public:
 
         // Turn Disabled On But Don't Change Value...
         player->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN);
-        player->GetSession()->SendAreaTriggerMessage(GetSession()->GetAcoreString(ACORE_STRING_COMMAND_DISABLED));
+        player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetAcoreString(ACORE_STRING_COMMAND_DISABLED));
         return true;
     }
 
@@ -235,7 +234,7 @@ public:
             return false;
 
         player->RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_NO_XP_GAIN);
-        player->GetSession()->SendAreaTriggerMessage(GetSession()->GetAcoreString(ACORE_STRING_COMMAND_ENABLED));
+        player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetAcoreString(ACORE_STRING_COMMAND_ENABLED));
         return true;
     }
 
@@ -254,7 +253,7 @@ public:
             return false;
 
         player->CustomData.GetDefault<PlayerXpRate>("IndividualXP")->XPRate = DefaultRate;
-        player->GetSession()->SendAreaTriggerMessage(GetSession()->GetAcoreString(ACORE_STRING_COMMAND_DEFAULT), DefaultRate);
+        player->GetSession()->SendAreaTriggerMessage(player->GetSession()->GetAcoreString(ACORE_STRING_COMMAND_DEFAULT), DefaultRate);
         return true;
     }
 };
